@@ -23,9 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Hey</string>
+	<string>NSLocationAlwaysUsageDescription</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please allow to use pettypay!</string>
+	<string>NSLocationWhenInUseUsageDescription</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

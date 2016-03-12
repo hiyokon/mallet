@@ -9,22 +9,44 @@
 import UIKit
 import CoreLocation
 import CoreBluetooth
+import CoreMotion
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDelegate {
 
-	// Monitering and Ranging
+	// Create Managers
+	let motionManager = CMMotionManager()
 	let peripheralManager = PeripheralManager()
     let locationManager = CLLocationManager()
+
+	// Setting Managers
+	// motionManager.accelerometerUpdateInterval = 0.01;
+
+	// Create Region
 	let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")!, identifier: "pettypay")
+	
+	// Create Motion Handler
+	let accelermeterHandler:CMAccelerometerHandler = {(data:CMAccelerometerData?, error:NSError?) -> Void in
+		let acceleration = data!.acceleration
+		let x = acceleration.x
+		let y = acceleration.y
+		let z = acceleration.z
+		let m = sqrt(x * x + y * y + z * z)
+		if m > 5 {
+			print(m)
+			if !PeripheralManager.isAdvertising() {
+				PeripheralManager.startAdvertising()
+			}
+		}
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 	    locationManager.delegate = self;
+		if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways) {
+			locationManager.requestAlwaysAuthorization()
+		}
 		if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse) {
 			locationManager.requestWhenInUseAuthorization()
-		}
-		if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways) {
-				locationManager.requestAlwaysAuthorization()
 		}
 		PeripheralManager.checkStateOfAdvertising()
 		locationManager.startMonitoringForRegion(region)
@@ -35,7 +57,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 	}
 
 	// ----------------------------------------
-	// Local Notification
+	// Local Notification and Alert
 	// ----------------------------------------
 
 	func sendLocalNotificationForMessage(message: String!) {
@@ -43,6 +65,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 		localNotification.alertBody = message
 		localNotification.soundName = UILocalNotificationDefaultSoundName
   		UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+	}
+	
+	func showAlert() {
+		var alert = UIAlertView()
+		alert.title = "Thank you"
+		alert.message = "your claim is paied"
+		alert.addButtonWithTitle("OK")
+		alert.show()
 	}
 
 	// ----------------------------------------
@@ -54,11 +84,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 		if(advertiseSwitch.on) {
 			print("on!")
 			locationManager.stopMonitoringForRegion(region)
-			PeripheralManager.startAdvertising()
+			motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:accelermeterHandler)
 		} else {
 			print("off!")
 			PeripheralManager.stopAdvertising()
 			locationManager.startMonitoringForRegion(region)
+			if (motionManager.accelerometerActive) {
+ 			   motionManager.stopAccelerometerUpdates()
+			}
 		}
 	}
 
@@ -92,8 +125,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 	// ----------------------------------------
 	
 	func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
-		print(beacons)
+		// let proximities = beacons.map({x in x.proximity.rawValue})
+		if let beacon = beacons.first {
+			if (beacon.proximity == CLProximity.Immediate || beacon.proximity == CLProximity.Near) {
+				// Immediate 1, Near 2, Far 3, Unknown 0
+				print(beacon)
+				showAlert()
+				if(region.isMemberOfClass(CLBeaconRegion)) {
+				    print("Stop Ranging")
+					locationManager.stopRangingBeaconsInRegion(region)
+				}
+			}
+		}
 	}
-
+	
 }
 

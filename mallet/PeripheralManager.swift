@@ -22,6 +22,10 @@ class PeripheralManager: CBPeripheralManager {
 	static func stopAdvertising() {
 		sharedInstance.stopAdvertising()
     }
+	
+	static func isAdvertising() -> Bool {
+		return sharedInstance.isAdvertising
+	}
 
 }
 
@@ -45,6 +49,7 @@ extension PeripheralManager: CBPeripheralManagerDelegate {
         case .PoweredOn:
             print("PoweredOn")
         }
+		
     }
 
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
