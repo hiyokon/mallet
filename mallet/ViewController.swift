@@ -43,10 +43,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 	
 	func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
 		print("start monitoring")
+		sendLocalNotificationForMessage("Start Monitoring Region")
 	}
 
 	func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
 		print("enter region")
+		sendLocalNotificationForMessage("Enter Region")
 		if(region.isMemberOfClass(CLBeaconRegion) && CLLocationManager.isRangingAvailable()) {
 			locationManager.startRangingBeaconsInRegion(region as! CLBeaconRegion)
  		}

@@ -16,6 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
+	
+        // ユーザのpush通知許可をもらうための設定
+        application.registerUserNotificationSettings(
+            UIUserNotificationSettings(forTypes:
+                [UIUserNotificationType.Sound
+                , UIUserNotificationType.Badge
+                , UIUserNotificationType.Alert], categories: nil)
+        )
+ 
 		return true
 	}
 
