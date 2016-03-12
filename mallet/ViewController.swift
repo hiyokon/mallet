@@ -8,9 +8,12 @@
 
 import UIKit
 import CoreLocation
-
+import CoreBluetooth
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDelegate {
+
+	// Monitering and Ranging
+	let peripheralManager = PeripheralManager()
     let locationManager = CLLocationManager()
 	let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")!, identifier: "pettypay")
 	
@@ -26,6 +29,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 				locationManager.requestAlwaysAuthorization()
 		}
 		
+		// pheripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+		PeripheralManager.setupAdvertising()
 		locationManager.startMonitoringForRegion(region)
 	}
 
@@ -34,15 +39,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBOutlet weak var advertiseSwitch: UISwitch!
-	@IBAction func advertise(sender: UISwitch) {
-		if(advertiseSwitch.on) {
-			print("on!")
-		} else {
-			print("off!")
-		}
-	}
-	
+	// ----------------------------------------
+	// Local Notification
+	// ----------------------------------------
 
 	func sendLocalNotificationForMessage(message: String!) {
 		let localNotification:UILocalNotification = UILocalNotification()
@@ -50,6 +49,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 		localNotification.soundName = UILocalNotificationDefaultSoundName
   		UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
 	}
+
+	// ----------------------------------------
+	// Advertising
+	// ----------------------------------------
+
+	@IBOutlet weak var advertiseSwitch: UISwitch!
+	@IBAction func advertise(sender: UISwitch) {
+		if(advertiseSwitch.on) {
+			print("on!")
+			locationManager.stopMonitoringForRegion(region)
+			PeripheralManager.startAdvertising()
+		} else {
+			print("off!")
+			PeripheralManager.stopAdvertising()
+			locationManager.startMonitoringForRegion(region)
+		}
+	}
+
+	// ----------------------------------------
+	// Monitoring and Ranging
+	// ----------------------------------------
 	
 	func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
 		print("start monitoring")
