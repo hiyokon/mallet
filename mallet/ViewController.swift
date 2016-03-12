@@ -34,6 +34,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 		// Dispose of any resources that can be recreated.
 	}
 
+	@IBOutlet weak var advertiseSwitch: UISwitch!
+	@IBAction func advertise(sender: UISwitch) {
+		if(advertiseSwitch.on) {
+			print("on!")
+		} else {
+			print("off!")
+		}
+	}
+	
+
 	func sendLocalNotificationForMessage(message: String!) {
 		let localNotification:UILocalNotification = UILocalNotification()
 		localNotification.alertBody = message
