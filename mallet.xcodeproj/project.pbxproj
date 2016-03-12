@@ -14,6 +14,7 @@
 		28F9A3F11C93CFB500BB6BEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28F9A3EF1C93CFB500BB6BEB /* LaunchScreen.storyboard */; };
 		28F9A3FC1C93CFB500BB6BEB /* malletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F9A3FB1C93CFB500BB6BEB /* malletTests.swift */; };
 		28F9A4071C93CFB500BB6BEB /* malletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F9A4061C93CFB500BB6BEB /* malletUITests.swift */; };
+		28F9A4151C93F71300BB6BEB /* PeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F9A4141C93F71300BB6BEB /* PeripheralManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		28F9A4021C93CFB500BB6BEB /* malletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = malletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F9A4061C93CFB500BB6BEB /* malletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = malletUITests.swift; sourceTree = "<group>"; };
 		28F9A4081C93CFB500BB6BEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28F9A4141C93F71300BB6BEB /* PeripheralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				28F9A3ED1C93CFB500BB6BEB /* Assets.xcassets */,
 				28F9A3EF1C93CFB500BB6BEB /* LaunchScreen.storyboard */,
 				28F9A3F21C93CFB500BB6BEB /* Info.plist */,
+				28F9A4141C93F71300BB6BEB /* PeripheralManager.swift */,
 			);
 			path = mallet;
 			sourceTree = "<group>";
@@ -193,6 +196,12 @@
 				TargetAttributes = {
 					28F9A3E21C93CFB500BB6BEB = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = EHY275UD66;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					28F9A3F61C93CFB500BB6BEB = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -256,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28F9A4151C93F71300BB6BEB /* PeripheralManager.swift in Sources */,
 				28F9A3E91C93CFB500BB6BEB /* ViewController.swift in Sources */,
 				28F9A3E71C93CFB500BB6BEB /* AppDelegate.swift in Sources */,
 			);
@@ -397,10 +407,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = mallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pettypay.mallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -408,10 +422,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = mallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pettypay.mallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
