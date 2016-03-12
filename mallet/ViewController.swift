@@ -19,24 +19,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
 	    locationManager.delegate = self;
 		if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse) {
 			locationManager.requestWhenInUseAuthorization()
 		}
-		
 		if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways) {
 				locationManager.requestAlwaysAuthorization()
 		}
-		
-		// pheripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-		PeripheralManager.setupAdvertising()
+		PeripheralManager.checkStateOfAdvertising()
 		locationManager.startMonitoringForRegion(region)
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
 	}
 
 	// ----------------------------------------
@@ -68,21 +63,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIAlertViewDe
 	}
 
 	// ----------------------------------------
-	// Monitoring and Ranging
+	// Monitoring
 	// ----------------------------------------
 	
 	func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
-		print("start monitoring")
+		print("Start Monitoring Region")
 		sendLocalNotificationForMessage("Start Monitoring Region")
 	}
-
+	
 	func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-		print("enter region")
+		print("Enter Region")
 		sendLocalNotificationForMessage("Enter Region")
 		if(region.isMemberOfClass(CLBeaconRegion) && CLLocationManager.isRangingAvailable()) {
 			locationManager.startRangingBeaconsInRegion(region as! CLBeaconRegion)
  		}
 	}
+	
+	func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+		print("Exit Region")
+		sendLocalNotificationForMessage("Exit Region")
+		if(region.isMemberOfClass(CLBeaconRegion)) {
+			locationManager.stopRangingBeaconsInRegion(region as! CLBeaconRegion)
+ 		}
+	}
+
+	// ----------------------------------------
+	// Ranging
+	// ----------------------------------------
 	
 	func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
 		print(beacons)

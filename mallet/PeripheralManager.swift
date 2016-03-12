@@ -10,7 +10,7 @@ class PeripheralManager: CBPeripheralManager {
     /**
      ペリフェラルとしてアドバタイジングを開始する
      */
-    static func setupAdvertising() {
+    static func checkStateOfAdvertising() {
         // delegateに代入すると CBPeripheralManagerDelegate のメソッドが呼び出される
         sharedInstance.delegate = sharedInstance
     }
